@@ -1,26 +1,20 @@
-# Secure Containerized Web Infrastructure
+# Secure Web Infrastructure (secure-web-infra)
 
-## Executive Summary
-This project demonstrates the deployment of a highly available, lightweight web infrastructure using modern DevSecOps principles. By migrating a traditional web server to a containerized architecture, this project achieves a 90% reduction in deployment time and enforces strict Infrastructure as Code (IaC) standards.
+An enterprise-hardened infrastructure deployment lab featuring an automated DevSecOps pipeline, static application security testing (SAST), and container security auditing.
 
-## Architecture & Technology Stack
-* **Containerization:** Docker
-* **Base OS Image:** Alpine Linux (Security Hardened)
-* **Web Server:** Apache HTTP Server (`httpd`)
-* **Version Control:** Git
+## Security Posture
 
-## Security Implementation (DevSecOps)
-A primary focus of this build is **Attack Surface Reduction (ASR)** and secure supply chain practices. 
+[![Dockerfile Security Lint](https://github.com/TimKing-Dev/secure-web-infra/actions/workflows/hadolint.yml/badge.svg)](https://github.com/TimKing-Dev/secure-web-infra/actions/workflows/hadolint.yml)
 
-* **Shift-Left Vulnerability Management:** Initial deployments utilizing standard Debian-based images (`httpd:2.4`) were scanned using Docker Scout, identifying several baseline vulnerabilities.
-* **Hardening via Alpine Linux:** The architecture was refactored to utilize `httpd:alpine`. This transition reduced the operating system footprint from over 100MB to approximately 5MB, successfully eliminating critical CVEs and adhering to the principle of least privilege.
-* **Immutable Infrastructure:** Server configurations are defined entirely in the `Dockerfile`, preventing configuration drift and ensuring that production environments perfectly match development environments.
+## Pipeline Architecture
+- **Static Analysis:** Hadolint (Docker Security Linter)
+- **Reporting Engine:** SARIF (Static Analysis Results Interchange Format) export
+- **Dashboard Integration:** GitHub Advanced Security / Code Scanning Alerts
 
-## Deployment Instructions
+## Getting Started
+To trigger the automated security scanning pipeline, make modifications to the root `Dockerfile` and push changes directly to the primary branch:
 
-To reproduce this environment locally, ensure Docker is installed and running, then execute the following commands:
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/your-username/secure-web-infra.git](https://github.com/your-username/secure-web-infra.git)
-   cd secure-web-infra
+```bash
+git add Dockerfile
+git commit -m "Secure: Hardening container runtime"
+git push origin main
