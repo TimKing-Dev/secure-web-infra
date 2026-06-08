@@ -10,11 +10,22 @@ jobs:
   hadolint:
     name: Run Hadolint Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write # Allows the pipeline to write to your Security tab
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Lint Dockerfile
+      - name: Run Hadolint and generate SARIF
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
+          format: sarif
+          output-file: hadolint.sarif
+          no-fail: true # Prevents the pipeline from breaking so the upload step always runs
+
+      - name: Upload Scan Results to GitHub Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: hadolint.sarif
